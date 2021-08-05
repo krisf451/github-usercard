@@ -1,10 +1,24 @@
 //test change
+// import axios from "axios";
 
+//going to do it similar to the guided project
+
+//create an entry point to attach the github user cards to the dom
+const entryPoint = document.querySelector(".cards");
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+axios
+  .get(`https://api.github.com/users/krisf451`)
+  .then(res => {
+    console.log(res.data);
+    entryPoint.appendChild(createCard(res.data));
+  })
+  .catch(err => {
+    console.error(err);
+  });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -51,6 +65,65 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function createCard(userData) {
+  //create elements that will be added to the dom
+  const container = document.createElement("div");
+  const userImage = document.createElement("img");
+  const cardInfo = document.createElement("div");
+  const userName = document.createElement("h3");
+  const userLogin = document.createElement("p");
+  const userLocation = document.createElement("p");
+  const profileLink = document.createElement("p");
+  const userLink = document.createElement("a");
+  const userFollowers = document.createElement("p");
+  const userFollowing = document.createElement("p");
+  const userBio = document.createElement("p");
+
+  //add classes
+  container.classList.add("card");
+  cardInfo.classList.add("card-info");
+  userName.classList.add("name");
+  userLogin.classList.add("username");
+  // <div class="card">
+  //     <img src={image url of user} />
+  //     <div class="card-info">
+  //       <h3 class="name">{users name}</h3>
+  //       <p class="username">{users user name}</p>
+  //       <p>Location: {users location}</p>
+  //       <p>Profile:
+  //         <a href={address to users github page}>{address to users github page}</a>
+  //       </p>
+  //       <p>Followers: {users followers count}</p>
+  //       <p>Following: {users following count}</p>
+  //       <p>Bio: {users bio}</p>
+  //     </div>
+  //   </div>
+  //append to the proper parents
+  container.appendChild(userImage);
+  container.appendChild(cardInfo);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(userLogin);
+  cardInfo.appendChild(userLocation);
+  cardInfo.appendChild(profileLink);
+  cardInfo.appendChild(userFollowers);
+  cardInfo.appendChild(userFollowing);
+  cardInfo.appendChild(userBio);
+  profileLink.appendChild(userLink);
+
+  //set values for the elements
+  userImage.src = userData.avatar_url;
+  userName.textContent = userData.name;
+  userLogin.textContent = userData.login;
+  userLocation.textContent = `Location: ${userData.location}`;
+  userLink.textContent = `Profile ${userData.html_url}`;
+  userLink.href = userData.html_url;
+  userFollowers.textContent = `Followers: ${userData.followers}`;
+  userFollowing.textContent = `Following: ${userData.following}`;
+  userBio.textContent = `Bio: ${userData.bio}`;
+
+  return container;
+}
 
 /*
   List of LS Instructors Github username's:
