@@ -13,25 +13,23 @@ const entryPoint = document.querySelector(".cards");
 axios
   .get(`https://api.github.com/users/krisf451`)
   .then(res => {
-    console.log(res.data);
-    entryPoint.appendChild(createCard(res.data));
-  })
-  .catch(err => {
-    console.error(err);
-  });
-
-/*
+    /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
     data in order to use it to build your component function
 
     Skip to STEP 3 (line 34).
 */
-
-/*
+    // console.log(res.data);
+    /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+    entryPoint.appendChild(createCard(res.data));
+  })
+  .catch(err => {
+    console.error(err);
+  });
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -43,8 +41,25 @@ axios
     Using that array, iterate over it, requesting data for each user, creating a new card for each
     user, and adding that card to the DOM.
 */
+const followersArray = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell"
+];
 
-const followersArray = [];
+followersArray.forEach(user => {
+  axios
+    .get(`https://api.github.com/users/${user}`)
+    .then(res => {
+      console.log(res.data.login);
+      entryPoint.appendChild(createCard(res.data));
+    })
+    .catch(err => {
+      console.error(err);
+    });
+});
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -85,20 +100,7 @@ function createCard(userData) {
   cardInfo.classList.add("card-info");
   userName.classList.add("name");
   userLogin.classList.add("username");
-  // <div class="card">
-  //     <img src={image url of user} />
-  //     <div class="card-info">
-  //       <h3 class="name">{users name}</h3>
-  //       <p class="username">{users user name}</p>
-  //       <p>Location: {users location}</p>
-  //       <p>Profile:
-  //         <a href={address to users github page}>{address to users github page}</a>
-  //       </p>
-  //       <p>Followers: {users followers count}</p>
-  //       <p>Following: {users following count}</p>
-  //       <p>Bio: {users bio}</p>
-  //     </div>
-  //   </div>
+
   //append to the proper parents
   container.appendChild(userImage);
   container.appendChild(cardInfo);
